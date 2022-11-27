@@ -1,9 +1,7 @@
 import { Order } from "../../types/Order";
 import { Board, OdersContainer } from "./styles";
-import { OrderModal } from "../OrderModal/index"
-import { useState } from 'react'
-
-
+import { OrderModal } from "../OrderModal/index";
+import { useState } from "react";
 
 interface OdersBoardProps {
 	icon: string;
@@ -11,39 +9,49 @@ interface OdersBoardProps {
 	orders: Order[];
 }
 
-export function OdersBoard({icon , title, orders}: OdersBoardProps) {
+export function OdersBoard({ icon, title, orders }: OdersBoardProps) {
+	const [isModalVisible, setIsModalVisible] = useState(false);
 
-	const [isModalVisible , setIsModalVisible] = useState(false);
+	const [selectedOrder, setSelectedOrder] = useState<null | Order>(null);
 
-	function handleOpenModal() {
+	function handleOpenModal(order: Order) {
 		setIsModalVisible(true);
+		setSelectedOrder(order);
 	}
-	
+
+	function handleCloseModal() {
+		setIsModalVisible(false);
+		setSelectedOrder(null);
+	}
+
 	return (
 		<Board>
+			<OrderModal 
+			visible={isModalVisible}
+			order={selectedOrder}
+			onClose={handleCloseModal}
+			/>
 
-			<OrderModal visible={isModalVisible}/>
-
-				<header>
-					<span>{icon}</span>
-					<span className="bold">{title}</span>
-					<span>({orders.length})</span>
-				</header>
-
-				
+			<header>
+				<span>{icon}</span>
+				<span className="bold">{title}</span>
+				<span>({orders.length})</span>
+			</header>
 
 			{orders.length > 0 && (
 				<OdersContainer>
-				{orders.map((order) => (
-					<button type="button" key={order._id} onClick={handleOpenModal}>
-					<span className="bold">Mesa  {order.table}</span>
-					<span> {order.products.length} Itens</span>
-					</button>
-				))}
-				
-			</OdersContainer>
+					{orders.map((order) => (
+						<button
+							type="button"
+							key={order._id}
+							onClick={() => handleOpenModal(order)}
+						>
+							<span className="bold">Mesa {order.table}</span>
+							<span> {order.products.length} Itens</span>
+						</button>
+					))}
+				</OdersContainer>
 			)}
-				
-			</Board>
-	)
+		</Board>
+	);
 }

@@ -29,7 +29,7 @@ const orders: Order[] = [
 		],
 },
 {
-	"_id": "63812e986a0ae9a6da0b473d",
+	"_id": "63812e986a0ae9a6da0b473d2",
 	"table": "123",
 	"status": "IN-PROGRESS",
 	"products": [
@@ -65,7 +65,7 @@ export function Orders() {
 			/>
 
 			<OdersBoard
-				icon = "⌛"
+				icon = "👩‍🍳"
 				title = "Em preparação" 
 				orders={[]}
 			/>
