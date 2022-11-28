@@ -7,9 +7,9 @@ import { Text } from './src/components/Text';
 export default function App() {
 
 	const [isFontLoaded] = useFonts({
-		'General-Sans400':  require('./src/assets/fonts/GeneralSans-Regular.otf'),
-		'General-Sans600':  require('./src/assets/fonts/GeneralSans-Semibold.otf'),
-		'General-Sans700':  require('./src/assets/fonts/GeneralSans-Bold.otf'),
+		'GeneralSans400':  require('./src/assets/fonts/GeneralSans-Regular.otf'),
+		'GeneralSans600':  require('./src/assets/fonts/GeneralSans-Semibold.otf'),
+		'GeneralSans700':  require('./src/assets/fonts/GeneralSans-Bold.otf'),
 	})
 
 	if (!isFontLoaded) {
@@ -34,3 +34,4 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 	},
 });
+ 
