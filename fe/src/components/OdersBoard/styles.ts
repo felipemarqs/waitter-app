@@ -37,7 +37,7 @@ export const OdersContainer = styled.div`
 		background: white;
 		border: 1px solid rgba(204, 204, 204, 0.4);
 		height: 128px;
-		boder-radius: 8px;
+		border-radius: 8px;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
