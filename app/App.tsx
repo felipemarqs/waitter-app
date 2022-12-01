@@ -1,15 +1,16 @@
-import { useFonts} from 'expo-font'
-import { StatusBar } from "expo-status-bar";
 import React from 'react';
-import { StyleSheet,  View} from "react-native";
+import { useFonts} from 'expo-font'
+import { Main } from './src/Main'
+import {StatusBar } from 'expo-status-bar'
 import { Text } from './src/components/Text';
+
 
 export default function App() {
 
 	const [isFontLoaded] = useFonts({
-		'GeneralSans400':  require('./src/assets/fonts/GeneralSans-Regular.otf'),
-		'GeneralSans600':  require('./src/assets/fonts/GeneralSans-Semibold.otf'),
-		'GeneralSans700':  require('./src/assets/fonts/GeneralSans-Bold.otf'),
+		'GeneralSans-400':  require('./src/assets/fonts/GeneralSans-Regular.otf'),
+		'GeneralSans-600':  require('./src/assets/fonts/GeneralSans-Semibold.otf'),
+		'GeneralSans-700':  require('./src/assets/fonts/GeneralSans-Bold.otf'),
 	})
 
 	if (!isFontLoaded) {
@@ -17,21 +18,10 @@ export default function App() {
 	}
 
 	return (
-		<View style={styles.container}>
-			<Text>Open up App.tsx to start working on your app!</Text>
-			<Text>Open up App.tsx to start working on your app!</Text>
-
-			<StatusBar style="auto" />
-		</View>
+		<>
+		<StatusBar style='dark'/>
+		<Main/>
+		</>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "red",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-});
  
