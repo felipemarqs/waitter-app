@@ -1,11 +1,18 @@
 import { FlatList } from "react-native";
 
-import React from "react";
+import React, { useState } from "react";
 import { categories } from "../../mocks/categories";
 import { Text } from "../Text";
 import { Category, Icon } from "./styles";
 
 export function Categories() {
+
+	const [selectedCategory, setSelectedCategory] = useState('');
+
+	function handleSelectCategory(categoryId: string) {
+		setSelectedCategory(categoryId)
+
+	}
 	return (
 		<FlatList
 			horizontal
@@ -14,7 +21,7 @@ export function Categories() {
 			contentContainerStyle={{paddingRight:24}}
 			keyExtractor={(category) => category._id}
 			renderItem={({ item: category }) => (
-				<Category>
+				<Category onPress={() => handleSelectCategory(category._id)}>
 					<Icon>
 						<Text>{category.icon}</Text>
 					</Icon>
