@@ -1,14 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { FlatList, TouchableOpacity } from "react-native";
 
 import { products } from "../../mocks/products";
+import { Product } from "../../types/Product";
 import { Text } from "../Text";
-import { Product, ProductImage, ProductDetails, Separator, AddToChartButton } from "./styles";
+import { ProductContainer, ProductImage, ProductDetails, Separator, AddToChartButton } from "./styles";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { PlusCircle } from "../Icons/PlusCircle";
+import { ProductModal } from "../ProductModal";
 
 export function Menu() {
+
+	const [isModalVisible , setIsModalVisible] = useState(false)
+	const [ selectedProduct, SetSelectedProduct] = useState<null | Product>(null);
+
+	function handleOpenModal(product: Product) {
+		setIsModalVisible(true);
+		SetSelectedProduct(product)
+		
+	}
+
 	return (
+		<>
+		<ProductModal 
+		visible={isModalVisible}
+		onClose={() => setIsModalVisible(false)}
+		product = { selectedProduct }
+		/>
+
+
 		<FlatList
 			data={products}
 			style={{ marginTop: 32 }}
@@ -16,7 +36,7 @@ export function Menu() {
 			keyExtractor={(product) => product._id}
 			ItemSeparatorComponent={Separator}
 			renderItem={({ item: product }) => (
-				<Product>
+				<ProductContainer onPress={() => handleOpenModal(product)}>
 					<ProductImage
 						source={{
 							uri: `http://192.168.1.150:3001/uploads/${product.imagePath}`,
@@ -36,8 +56,9 @@ export function Menu() {
 					<AddToChartButton>
 						<PlusCircle />
 					</AddToChartButton>
-				</Product>
+				</ProductContainer>
 			)}
 		/>
+		</>
 	);
 }

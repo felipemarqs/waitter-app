@@ -1,18 +1,45 @@
-import React from 'react';
-import { Container } from './styles';
-import { Text } from '../Text';
+import React from "react";
+import { Container, Content, OrderHeader , Table} from "./styles";
+import { Text } from "../Text";
+import { TouchableOpacity } from "react-native";
 
+interface HeaderProps {
+	selectedTable: string;
+	onCancelOrder: () => void;
+}
 
-export function Header() {
-	 return (
-		
+export function Header({ selectedTable, onCancelOrder }: HeaderProps) {
+	return (
 		<Container>
-			<Text size={14} opacity={0.9}> Bem Vindo(a) ao </Text>
-			<Text size={24} weight="700"> 
-				WAITTER
-				<Text size={24}>APP</Text> 
-			</Text>
-		</Container>
+			{!selectedTable && (
+				<>
+					<Text size={14} opacity={0.9}>
+						{" "}
+						Bem Vindo(a) ao{" "}
+					</Text>
+					<Text size={24} weight="700">
+						WAITTER
+						<Text size={24}>APP</Text>
+					</Text>
+				</>
+			)}
 
-	 )
+			{ selectedTable && (
+				<>
+					<Content>
+						<OrderHeader>
+							<Text weight="600" size={24}>Pedido </Text>
+							<TouchableOpacity onPress={onCancelOrder}>
+								<Text color="#D73035" weight="600" size={14}>cancelar pedido</Text>
+							</TouchableOpacity>
+						</OrderHeader>
+
+						<Table>
+								<Text color="#666">Mesa {selectedTable}</Text>
+						</Table>
+					</Content>
+				</>
+			)}
+		</Container>
+	);
 }
