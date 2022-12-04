@@ -1,10 +1,11 @@
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, TouchableOpacity } from "react-native";
 
 import { products } from "../../mocks/products";
 import { Text } from "../Text";
-import { Product, ProductImage, ProductDetails } from "./styles";
+import { Product, ProductImage, ProductDetails, Separator, AddToChartButton } from "./styles";
 import { formatCurrency } from "../../utils/formatCurrency";
+import { PlusCircle } from "../Icons/PlusCircle";
 
 export function Menu() {
 	return (
@@ -13,6 +14,7 @@ export function Menu() {
 			style={{ marginTop: 32 }}
 			contentContainerStyle={{ paddingHorizontal: 24 }}
 			keyExtractor={(product) => product._id}
+			ItemSeparatorComponent={Separator}
 			renderItem={({ item: product }) => (
 				<Product>
 					<ProductImage
@@ -30,6 +32,10 @@ export function Menu() {
 							{formatCurrency(product.price)}
 						</Text>
 					</ProductDetails>
+
+					<AddToChartButton>
+						<PlusCircle />
+					</AddToChartButton>
 				</Product>
 			)}
 		/>
