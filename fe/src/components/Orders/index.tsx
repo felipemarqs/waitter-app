@@ -1,81 +1,45 @@
 import { Container } from "./styles";
 import { OdersBoard } from "../OdersBoard";
-import { Order } from "../../types/Order"
-
-const orders: Order[] = [
-	{
-		"_id": "63812e986a0ae9a6da0b473d",
-		"table": "123",
-		"status": "IN-PROGRESS",
-		"products": [
-				{
-						"product": {	
-								"name": "Pizza quatro queijos",	
-								"imagePath": "1669407421979-quatro-queijos.png",
-								"price": 40,
-						},
-						"quantity": 2,
-						"_id": "63812e986a0ae9a6da0b473e"
-				},
-				{
-						"product": {
-								"name": "Coca Cola",
-								"imagePath": "1669409529478-coca-cola.png",
-								"price": 7,
-						},
-						"quantity": 2,
-						"_id": "63812e986a0ae9a6da0b473f"
-				}
-		],
-},
-{
-	"_id": "63812e986a0ae9a6da0b473d2",
-	"table": "123",
-	"status": "IN-PROGRESS",
-	"products": [
-			{
-					"product": {	
-							"name": "Pizza quatro queijos",	
-							"imagePath": "1669407421979-quatro-queijos.png",
-							"price": 40,
-					},
-					"quantity": 2,
-					"_id": "63812e986a0ae9a6da0b473e"
-			},
-			{
-					"product": {
-							"name": "Coca Cola",
-							"imagePath": "1669409529478-coca-cola.png",
-							"price": 7,
-					},
-					"quantity": 2,
-					"_id": "63812e986a0ae9a6da0b473f"
-			}
-	],
-}
-]
+import { Order } from "../../types/Order";
+import { useState, useEffect } from "react";
+import { api } from "../../utils/api";
 
 export function Orders() {
+	const [orders, setOrders] = useState<Order[]>([]);
+
+	useEffect(() => {
+		api.get("/orders").then(({ data }) => {
+			console.log(data);
+			setOrders(data);
+		});
+	}, []);
+
+
+
+	const waiting = orders.filter((order) => order.status === "WAITING");
+	const inProduction = orders.filter((order) => order.status === "IN-PROGRESS");
+	const done = orders.filter((order) => order.status === "COMPLETED");
+
+	function handleCancelOrder(orderId: string) {
+		setOrders((prevState) => prevState.filter(order => order._id != orderId))
+	}
+
 	return (
 		<Container>
-			<OdersBoard
-				icon = "🕑"
-				title = "Fila de espera"
-				orders = {orders}
-			/>
+			<OdersBoard icon="🕑"
+			title="Fila de espera"
+			orders={waiting}
+			onCancelOrder={handleCancelOrder} />
 
-			<OdersBoard
-				icon = "👩‍🍳"
-				title = "Em preparação" 
-				orders={[]}
-			/>
+			<OdersBoard icon="👩‍🍳"
+			title="Em preparação"
+			orders={inProduction}
+			onCancelOrder={handleCancelOrder} />
 
-			<OdersBoard
-				icon = "✅"
-				title = "Concluído!" 
-				orders={[]}
-			
-			/>
+			<OdersBoard icon="✅"
+			title="Concluído!"
+			orders={done}
+			onCancelOrder={handleCancelOrder} />
 		</Container>
 	);
 }
