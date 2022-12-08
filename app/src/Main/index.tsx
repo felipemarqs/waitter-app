@@ -16,13 +16,15 @@ import { TableModal } from "../components/TableModal";
 import { Cart } from "../components/Cart";
 import { CartItem } from "../types/CartItem";
 import { Product } from "../types/Product";
-import { products } from "../mocks/products";
+import { products as mockProducts } from "../mocks/products";
 import { ActivityIndicator } from "react-native";
+import { Empty } from "../components/Icons/Empty";
 
 export function Main() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isTableModalVisible, setIsTableModalVisible] = useState(false);
 	const [selectedTable, setSelectedTable] = useState("");
+	const [products] = useState<Product[]>(mockProducts);
 
 	const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
@@ -95,21 +97,29 @@ export function Main() {
 					onCancelOrder={handleResetOrder}
 				/>
 
-	{isLoading && (
-		<CenteredContainer>
-			<ActivityIndicator color="#d73035" size="large"/>
-		</CenteredContainer>
-	)}
-
-				{!isLoading && (
+				{isLoading ? (
+					<CenteredContainer>
+						<ActivityIndicator color="#d73035" size="large" />
+					</CenteredContainer>
+				) : (
 					<>
 						<CategoriesContainer>
 							<Categories />
 						</CategoriesContainer>
 
-						<MenuContainer>
-							<Menu onAddToCart={handleAddToCart} />
-						</MenuContainer>
+						{products.length > 0 ? (
+							<MenuContainer>
+								<Menu onAddToCart={handleAddToCart} products={products} />
+							</MenuContainer>
+						) : (
+							<CenteredContainer>
+								<Empty></Empty>
+
+								<Text color="#666" style={{marginTop:24}}>
+									Nenhum produto foi encontrado.
+								</Text>
+							</CenteredContainer>
+						)}
 					</>
 				)}
 			</Container>
@@ -117,8 +127,10 @@ export function Main() {
 			<Footer>
 				<FooterContainer>
 					{!selectedTable && (
-						<Button onPress={() => setIsTableModalVisible(true)}
-						disabled={isLoading}>
+						<Button
+							onPress={() => setIsTableModalVisible(true)}
+							disabled={isLoading}
+						>
 							Novo Pedido
 						</Button>
 					)}

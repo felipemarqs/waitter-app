@@ -16,7 +16,6 @@ export const CategoriesContainer = styled.View`
 `;
 
 export const MenuContainer = styled.View`
-	
 	flex: 1;
 `;
 
