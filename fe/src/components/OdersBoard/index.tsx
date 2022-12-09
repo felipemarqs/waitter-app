@@ -4,11 +4,14 @@ import { OrderModal } from "../OrderModal/index";
 import { useState } from "react";
 import { api } from "../../utils/api";
 
+import { toast } from "react-toastify";
+
 interface OdersBoardProps {
 	icon: string;
 	title: string;
 	orders: Order[];
 	onCancelOrder: (order: string) => void;
+	onChangeOrderStatus: (orderId: string, status: Order['status']) => void;
 }
 
 export function OdersBoard({
@@ -16,6 +19,7 @@ export function OdersBoard({
 	title,
 	orders,
 	onCancelOrder,
+	onChangeOrderStatus
 }: OdersBoardProps) {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -32,12 +36,26 @@ export function OdersBoard({
 		setSelectedOrder(null);
 	}
 
+	async function handleChangeOrderStatus() {
+		setIsLoading(true)
+
+		const newStatus = selectedOrder?.status === 'WAITING' ? 'IN-PROGRESS' : 'COMPLETED';
+
+		await api.patch(`/orders/${selectedOrder?._id}`, { status : newStatus});
+
+		toast.success(`O pedido alterado com sucesso!`)
+		onChangeOrderStatus(selectedOrder!._id , newStatus);
+		setIsLoading(false);
+		setIsModalVisible(false);
+	}
+
 	async function handleCancelOrder() {
 		setIsLoading(true);
 
-		await new Promise((resolve) => setTimeout(resolve, 3000));
+		
 		await api.delete(`/orders/${selectedOrder?._id}`);
 
+		toast.success(`O pedido cancelado com sucesso!`)
 		onCancelOrder(selectedOrder!._id);
 		setIsLoading(false);
 		setIsModalVisible(false);
@@ -51,6 +69,7 @@ export function OdersBoard({
 				onClose={handleCloseModal}
 				onCancelOrder={handleCancelOrder}
 				isLoading={isLoading}
+				onChangeOrderStatus={handleChangeOrderStatus}
 			/>
 
 			<header>
